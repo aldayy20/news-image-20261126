@@ -11,6 +11,8 @@
 // This program copies that image to $MAKEFUN_OUTPUT_DIR/entry.png.
 // It reads nothing else, reaches no network, and writes the same bytes
 // on every run: a plain copy of a fixed file.
+// Note: entry.png is validated (magic bytes, size, dimensions) before
+// copying, so a corrupt image fails loudly instead of being submitted.
 //
 // Run it locally with:
 //   mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
@@ -19,6 +21,8 @@ import { copyFileSync, existsSync, mkdirSync, readFileSync, statSync } from "nod
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
+// Determinism note: the output is a byte-for-byte copy of entry.png,
+// so re-running the command writes identical bytes every time.
 const MAX_BYTES = 1048576; // 1 MiB, the bounty gate
 const MAX_PIXELS = 1024; // 1024 by 1024 at most
 
